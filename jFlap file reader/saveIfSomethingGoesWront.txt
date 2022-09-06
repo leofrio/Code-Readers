@@ -1,0 +1,66 @@
+while True:  
+    userInput=input("type the combination to see if its an avaliable hex number in java,type p to exit \n")
+    if userInput.lower() == 'p' : 
+        break  
+    if len(userInput) < size-1: 
+        print("sequence is not on the desired format")  
+        continue 
+    failed=False
+    adder=0 
+    prevfro=-1
+    for i in mainDic.keys():
+        splitted=i.split("_") 
+        fro=int(splitted[0]) 
+        to=int(splitted[1])  
+        sub=to-fro  
+        a=0 
+        if sub == 1:   
+            if fro+adder < len(userInput):
+                if userInput[fro+adder] not in mainDic[i]: 
+                    failed=True 
+                    break; 
+            else: 
+                if userInput[fro] not in mainDic[i]: 
+                    failed=True 
+                    break; 
+        elif sub == 0 :  
+            if fro == 0: 
+                failed=True 
+                break
+            subfail=False   
+            while fro+(adder+a) < len(userInput):  
+                hasFuture=False
+                if userInput[fro+adder] not in mainDic[i]: 
+                    if len(froDic[fro]) == 1: 
+                        subfail = True 
+                        break   
+                    else: 
+                        newkeys=[]  
+                        for j in froDic[fro]: 
+                            if j != to:  
+                                newkey=str(fro) +"_" +str(j)
+                                newkeys.append(newkey) 
+                        for j in newkeys: 
+                            if userInput[fro+(adder-a)] in mainDic[j]: 
+                                hasFuture=True
+                                break;  
+                if not hasFuture:
+                    adder +=1 
+                else: 
+                    break;
+            if subfail: 
+                failed=True 
+                break; 
+        else:
+            if fro > to: 
+                #going to a previous state 
+                print("")
+            else: 
+                #going to a future state
+                print("")
+        print("got through step ", i)
+        prevfro=fro  
+    if failed: 
+        print("the sequence is not on the desired format")  
+        continue; 
+    print("that sequence is on the desired format")
